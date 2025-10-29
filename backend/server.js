@@ -3,23 +3,24 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import path from "path";
-import { fileURLToPath } from "url";
 import jwt from "jsonwebtoken";
 
-// Import models
 import User from "./models/User.js";
 import Speed from "./models/Speed.js";
 
 dotenv.config();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const app = express();
 
 // Middleware
-app.use(cors({ origin: process.env.NODE_ENV !== "production" ? "http://localhost:5173" : "*" }));
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV !== "production"
+        ? "http://localhost:5173"
+        : "*",
+  })
+);
 app.use(express.json());
 
 // MongoDB connection
@@ -47,16 +48,21 @@ const protect = (req, res, next) => {
 // Register
 app.post("/api/users/register", async (req, res) => {
   const { name, email, password } = req.body;
-  if (!name || !email || !password) return res.status(400).json({ message: "All fields required" });
+  if (!name || !email || !password)
+    return res.status(400).json({ message: "All fields required" });
 
   try {
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json({ message: "User already exists" });
 
     const user = await User.create({ name, email, password });
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
-    res.status(201).json({ _id: user._id, name: user.name, email: user.email, token });
+    res
+      .status(201)
+      .json({ _id: user._id, name: user.name, email: user.email, token });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
@@ -71,7 +77,9 @@ app.post("/api/users/login", async (req, res) => {
     if (!user || !(await user.matchPassword(password)))
       return res.status(400).json({ message: "Invalid email or password" });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
     res.json({ _id: user._id, name: user.name, email: user.email, token });
   } catch (err) {
     console.error(err);
@@ -84,11 +92,18 @@ app.get("/api/speeds", async (req, res) => {
   try {
     const search = req.query.search?.trim();
     const query = search
-      ? { $or: [{ title: new RegExp(search, "i") }, { authors: new RegExp(search, "i") }, { claim: new RegExp(search, "i") }] }
+      ? {
+          $or: [
+            { title: new RegExp(search, "i") },
+            { authors: new RegExp(search, "i") },
+            { claim: new RegExp(search, "i") },
+          ],
+        }
       : {};
 
     const results = await Speed.find(query);
-    if (!results.length) return res.status(404).json({ message: "No records found" });
+    if (!results.length)
+      return res.status(404).json({ message: "No records found" });
 
     res.json(results);
   } catch (err) {
@@ -111,7 +126,9 @@ app.post("/api/speeds", protect, async (req, res) => {
 // Update speed
 app.put("/api/speeds/:id", protect, async (req, res) => {
   try {
-    const updated = await Speed.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updated = await Speed.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     if (!updated) return res.status(404).json({ message: "Claim not found" });
     res.json(updated);
   } catch (err) {
@@ -131,11 +148,6 @@ app.delete("/api/speeds/:id", protect, async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
-
-// --- Serve frontend ---
-const buildPath = path.join(__dirname, "../frontend/dist");
-app.use(express.static(buildPath));
-app.get(/.*/, (req, res) => res.sendFile(path.join(buildPath, "index.html")));
 
 // --- Start server ---
 const PORT = process.env.PORT || 5000;

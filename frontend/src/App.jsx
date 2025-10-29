@@ -1,11 +1,11 @@
 // src/App.js
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Login from "./pages/login";
 import Register from "./pages/Register";
 import Search from "./pages/Search";
 import Navbar from "./components/BottomNav";
 import AddClaim from "./pages/AddClaim";
+import Login from "./pages/Login";
 import { useState } from "react";
 
 function App() {

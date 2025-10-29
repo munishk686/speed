@@ -1,0 +1,66 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding-bottom: 60px; /* space for bottom nav */
+}
+.main {
+  flex: 0 0 90%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: white;
+  padding-top: 50px;
+}
+/* .wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background-color: #d1803d; */
+  /* padding: 10px;
+  border-radius: 1px;
+  gap: 15px;
+} */ 
+.mainContent {
+  text-align: center;
+}
+.main p {
+  margin: 0;
+  font-size: 14px;
+}
+.mainButtons {
+  display: flex;
+  flex-direction: column; /* stack buttons vertically */
+  align-items: center; /* center horizontally */
+  gap: 15px; /* space between buttons */
+  margin-top: 30px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  background-color: #d1803d;
+  color: white;
+  width: 50%;
+  text-align: center;
+  text-decoration: none; /* remove underline */
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #ff9800;
+  color: #311b1b;
+}
+
+
+.mainButtons button:hover {
+  background-color: #ff9800;
+  color: #311b1b;
+}
+
+

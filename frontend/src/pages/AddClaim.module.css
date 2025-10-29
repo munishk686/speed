@@ -1,0 +1,35 @@
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding-bottom: 60px; 
+}
+.main {
+  flex: 0 0 90%;
+  width: 100%;
+  display: flex;
+   justify-content: center;
+  justify-items: center;
+}
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: khaki;
+  width: 550px;
+  height: auto;
+  border-radius: 12px;
+  color: #d1803d;
+  background-color: white;
+}
+.form input,
+.form textarea,
+.form button {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+}
+
+
+
+

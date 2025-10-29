@@ -5,14 +5,15 @@ function Search() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
-  const API_URL = import.meta.env.MODE === "production" ? "/api/speeds" : "http://localhost:5000/api/speeds";
+  const API_URL =
+    import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   const handleSearch = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const res = await fetch(`${API_URL}?search=${query}`);
+const res = await fetch(`${API_URL}/api/speeds?search=${query}`);
 
       const data = await res.json();
 

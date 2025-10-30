@@ -3,8 +3,10 @@ import styles from "./AddClaim.module.css";
 
 
 function AddClaim() {
-  const API_URL = import.meta.env.MODE === "production" ? "/api/speeds" : "http://localhost:5000/api/speeds"; 
-  const [form, setForm] = useState({
+ const API_URL =
+    import.meta.env.VITE_API_URL || "http://localhost:5000";
+    
+    const [form, setForm] = useState({
     title: "",
     authors: "",
     journal: "",
@@ -28,7 +30,7 @@ function AddClaim() {
 
     try {
       const payload = { ...form }; // send all fields
-      const res = await fetch(`${API_URL}`, {
+      const res = await fetch(`${API_URL}/api/speeds`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
